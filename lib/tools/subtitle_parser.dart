@@ -1,12 +1,12 @@
-import 'dart:async';
 import '../domain/entities/subtitle.dart';
+import '../domain/entities/subtitle_list.dart';
 
 ///! The user have not to use this class.
 /// This decode subtitles after fetched by [SubtitleRepository].
 /// The decode with [RegExp].
-class SubtitleController {
+class SubtitleParser {
   /// This method that decode the subtitles by provide a [FutureOr<String>].
-  Future<List<Subtitle>> fetchList(FutureOr<String> data) async {
+  SubtitleList call(String content) {
     RegExp regExp = new RegExp(
       r"(\d{1,2}):(\d{2}):(\d{2})\.(\d+) --> (\d{1,2}):(\d{2}):(\d{2})\.(\d+)(?:.*)(\D*)",
       caseSensitive: false,
@@ -24,8 +24,6 @@ class SubtitleController {
       caseSensitive: false,
       multiLine: true,
     );
-
-    String content = await data;
 
     List<String> subList = content.split('\n');
 
@@ -80,6 +78,6 @@ class SubtitleController {
       },
     );
 
-    return subtitleList;
+    return SubtitleList(subtitleList);
   }
 }
